@@ -2,6 +2,7 @@ package net.infojobs.workshop4.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +31,7 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
     private ContentLoadingProgressBar loadingView;
     private FloatingActionButton favoriteFAB;
     private SuperHeroesRepository superHeroesRepository;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
         initializeViews();
 
         superHeroesRepository = SuperHeroesRepositoryFactory.create();
+        sharedPreferences = getSharedPreferences("favorites", MODE_PRIVATE);
 
         loadSuperHero();
     }
@@ -89,7 +91,15 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
         favoriteFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SuperHeroDetailActivity.this, "Favorite!", Toast.LENGTH_SHORT).show();
+                boolean newSelectedState = !favoriteFAB.isSelected();
+                // Toggle the state
+                favoriteFAB.setSelected(newSelectedState);
+                // Save the new state
+                sharedPreferences.edit()
+                        .putBoolean(getSuperHeroName(), newSelectedState)
+                        .apply();
+                // Set image
+                favoriteFAB.setImageResource(newSelectedState ? R.drawable.ic_remove_24dp : R.drawable.ic_favorite_24dp);
             }
         });
     }

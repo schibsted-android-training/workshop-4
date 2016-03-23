@@ -68,7 +68,6 @@
             android:layout_height="56dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_favorite_24dp"
-            android:visibility="gone"
             app:layout_anchor="@+id/iv_super_hero_photo"
             app:layout_anchorGravity="bottom|right"
             />
