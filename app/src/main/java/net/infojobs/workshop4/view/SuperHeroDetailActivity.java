@@ -47,6 +47,7 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("favorites", MODE_PRIVATE);
 
         loadSuperHero();
+        loadFavorite();
     }
 
     private void loadSuperHero() {
@@ -72,6 +73,11 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
         }.execute();
     }
 
+    private void loadFavorite() {
+        boolean isFavorite = sharedPreferences.getBoolean(getSuperHeroName(), false);
+        setFavoriteStatus(isFavorite);
+    }
+
     public void showSuperHero(SuperHero superHero) {
         Picasso.with(this).load(superHero.getPhoto()).fit().centerCrop().into(superHeroPhotoImageView);
         superHeroNameTextView.setText(superHero.getName());
@@ -92,16 +98,20 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean newSelectedState = !favoriteFAB.isSelected();
-                // Toggle the state
-                favoriteFAB.setSelected(newSelectedState);
-                // Save the new state
-                sharedPreferences.edit()
-                        .putBoolean(getSuperHeroName(), newSelectedState)
-                        .apply();
-                // Set image
-                favoriteFAB.setImageResource(newSelectedState ? R.drawable.ic_remove_24dp : R.drawable.ic_favorite_24dp);
+                setFavoriteStatus(newSelectedState);
             }
         });
+    }
+
+    private void setFavoriteStatus(boolean isFavorite) {
+        // Toggle the state
+        favoriteFAB.setSelected(isFavorite);
+        // Save the new state
+        sharedPreferences.edit()
+                .putBoolean(getSuperHeroName(), isFavorite)
+                .apply();
+        // Set image
+        favoriteFAB.setImageResource(isFavorite ? R.drawable.ic_remove_24dp : R.drawable.ic_favorite_24dp);
     }
 
     public static Intent buildIntent(Context context, SuperHero superHero) {
