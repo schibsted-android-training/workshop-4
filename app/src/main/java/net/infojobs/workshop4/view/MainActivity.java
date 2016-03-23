@@ -35,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         loadSuperHeroes();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
     private void loadSuperHeroes() {
         new AsyncTask<Void, Void, List<SuperHero>>() {
             @Override
