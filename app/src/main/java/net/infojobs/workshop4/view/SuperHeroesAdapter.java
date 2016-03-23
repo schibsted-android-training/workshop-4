@@ -1,6 +1,7 @@
 package net.infojobs.workshop4.view;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,18 +55,23 @@ public class SuperHeroesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private final SuperHeroClickListener superHeroClickListener;
         private final ImageView photoImageView;
         private final TextView nameTextView;
+        private final ImageView favoriteImageView;
+        private final SharedPreferences sharedPreferences;
 
         public SuperHeroViewHolder(View itemView, SuperHeroClickListener superHeroClickListener) {
             super(itemView);
             this.superHeroClickListener = superHeroClickListener;
             this.photoImageView = (ImageView) itemView.findViewById(R.id.iv_super_hero_photo);
             this.nameTextView = (TextView) itemView.findViewById(R.id.tv_super_hero_name);
+            this.favoriteImageView = (ImageView) itemView.findViewById(R.id.iv_super_hero_favorite);
+            this.sharedPreferences = getContext().getSharedPreferences("favorites", Context.MODE_PRIVATE);
         }
 
         public void render(SuperHero superHero) {
             hookListeners(superHero);
             renderSuperHeroPhoto(superHero.getPhoto());
             renderSuperHeroName(superHero.getName());
+            renderSuperHeroFavorite(superHero);
         }
 
         private void hookListeners(final SuperHero superHero) {
@@ -85,6 +91,14 @@ public class SuperHeroesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             nameTextView.setText(name);
         }
 
+        private void renderSuperHeroFavorite(SuperHero superHero) {
+            boolean isFavorite = sharedPreferences.getBoolean(superHero.getName(), false);
+            if (isFavorite) {
+                favoriteImageView.setVisibility(View.VISIBLE);
+            } else {
+                favoriteImageView.setVisibility(View.GONE);
+            }
+        }
 
         private Context getContext() {
             return itemView.getContext();
