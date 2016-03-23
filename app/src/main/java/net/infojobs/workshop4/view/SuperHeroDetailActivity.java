@@ -2,11 +2,13 @@ package net.infojobs.workshop4.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,10 +48,23 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
     }
 
     private void loadSuperHero() {
-        loadingView.show();
-        SuperHero superHero = superHeroesRepository.getByName(getSuperHeroName());
-        showSuperHero(superHero);
-        loadingView.hide();
+        new AsyncTask<Void, Void, SuperHero>() {
+            @Override
+            protected void onPreExecute() {
+                loadingView.show();
+            }
+
+            @Override
+            protected SuperHero doInBackground(Void... params) {
+                return superHeroesRepository.getByName(getSuperHeroName());
+            }
+
+            @Override
+            protected void onPostExecute(SuperHero superHero) {
+                showSuperHero(superHero);
+                loadingView.hide();
+            }
+        }.execute();
     }
 
     public void showSuperHero(SuperHero superHero) {
