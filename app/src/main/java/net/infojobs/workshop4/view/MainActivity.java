@@ -36,14 +36,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSuperHeroes() {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, List<SuperHero>>() {
             @Override
-            protected Void doInBackground(Void... params) {
+            protected void onPreExecute() {
                 loadingView.show();
-                List<SuperHero> superHeroes = superHeroesRepository.getAll();
+            }
+
+            @Override
+            protected List<SuperHero> doInBackground(Void... params) {
+                return superHeroesRepository.getAll();
+            }
+
+            @Override
+            protected void onPostExecute(List<SuperHero> superHeroes) {
                 adapter.setSuperHeroes(superHeroes);
                 loadingView.hide();
-                return null;
             }
         }.execute();
     }
