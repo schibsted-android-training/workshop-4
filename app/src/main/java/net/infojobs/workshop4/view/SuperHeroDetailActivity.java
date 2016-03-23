@@ -51,16 +51,19 @@ public class SuperHeroDetailActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, SuperHero>() {
             @Override
             protected void onPreExecute() {
+                Log.d("Thread", "pre -> " + Thread.currentThread().getName());
                 loadingView.show();
             }
 
             @Override
             protected SuperHero doInBackground(Void... params) {
+                Log.d("Thread", "do -> " + Thread.currentThread().getName());
                 return superHeroesRepository.getByName(getSuperHeroName());
             }
 
             @Override
             protected void onPostExecute(SuperHero superHero) {
+                Log.d("Thread", "post -> " + Thread.currentThread().getName());
                 showSuperHero(superHero);
                 loadingView.hide();
             }
