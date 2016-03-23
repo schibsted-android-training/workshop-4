@@ -1,6 +1,7 @@
 package net.infojobs.workshop4.view;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,11 +36,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSuperHeroes() {
-        loadingView.show();
-
-        List<SuperHero> superHeroes = superHeroesRepository.getAll();
-        adapter.setSuperHeroes(superHeroes);
-        loadingView.hide();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                loadingView.show();
+                List<SuperHero> superHeroes = superHeroesRepository.getAll();
+                adapter.setSuperHeroes(superHeroes);
+                loadingView.hide();
+                return null;
+            }
+        }.execute();
     }
 
     private void initializeAdapter() {
