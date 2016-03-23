@@ -1,61 +1,31 @@
 package net.infojobs.workshop4.data;
 
-import com.google.gson.Gson;
-
 import net.infojobs.workshop4.domain.SuperHero;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
+import retrofit.RestAdapter;
 
 public class MarvelSuperHeroesRepository implements SuperHeroesRepository {
 
     private static final String ENDPOINT = "https://marvel-ij.herokuapp.com/";
 
-    private final OkHttpClient httpClient;
-    private final Gson gson;
+    private final MarvelApi marvelApi;
 
     public MarvelSuperHeroesRepository() {
-        httpClient = new OkHttpClient();
-        gson = new Gson();
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(ENDPOINT)
+                .build();
+        marvelApi = restAdapter.create(MarvelApi.class);
     }
 
     @Override
-
     public List<SuperHero> getAll() {
-        Request request = new Request.Builder()
-                .get()
-                .url(ENDPOINT + "characters")
-                .build();
-
-        try {
-            Response response = httpClient.newCall(request).execute();
-            String jsonResponse = response.body().string();
-            SuperHero[] superHeroes = gson.fromJson(jsonResponse, SuperHero[].class);
-            return Arrays.asList(superHeroes);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return marvelApi.getAll();
     }
 
     @Override
     public SuperHero getByName(String name) {
-        Request request = new Request.Builder()
-                .get()
-                .url(ENDPOINT + "characters/" + name)
-                .build();
-
-        try {
-            Response response = httpClient.newCall(request).execute();
-            String jsonResponse = response.body().string();
-            return gson.fromJson(jsonResponse, SuperHero.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return marvelApi.getByName(name);
     }
 }
