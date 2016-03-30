@@ -22,10 +22,18 @@ MainActivity                        | SuperHeroDetailActivity
 
 
 # Companion slides
-TODO
+[Here!](slides/workshop4.pdf) 😃
 
 # Step by Step
-TODO
+Every commit in the repo is an small individual step. You can check out the list of [commits](https://github.com/schibsted-android-training/workshop-4/commits/finished) to view the detailed process step by step.
 
 # Contents
-TODO
+1. Base project: A two activity application which shows a list of super heroes and their detail | [e2d76bb8](https://github.com/schibsted-android-training/workshop-4/commit/e2d76bb882311b2c1524ca38553738a249e1a0a3)
+2. Creating AsyncTasks for retrieving super heroes in background | [5738c511…31abbbb4](https://github.com/schibsted-android-training/workshop-4/compare/7fce09265c512f67c2b1769eebf0bd70249ce9da...31abbbb44d14fd0673b22cdd11ef94ae2fc8b469)
+3. Requesting data from a real API using OkHttp | [dbb39f56](https://github.com/schibsted-android-training/workshop-4/commit/dbb39f5647b47a68bd5fd0216ebbab37238bb7d4)
+4. Implementing the API with Retrofit 1.9 | [4e657c0a](https://github.com/schibsted-android-training/workshop-4/commit/4e657c0a57ca012f5a741cb4f3b7af8134d97347)
+5. Storing and reading favorite super heroes with SharedPreferences | [73789d9e…44c98781](https://github.com/schibsted-android-training/workshop-4/compare/4e657c0a57ca012f5a741cb4f3b7af8134d97347...44c98781f21f349f4106f3fd498c9f3b950f0b98)
+
+
+### Acknowledgment
+The app's look and feel are based on [Karumi's SuperHeroes kata](https://github.com/Karumi/KataSuperHeroesAndroid). If you're interested in testing, check it out!
